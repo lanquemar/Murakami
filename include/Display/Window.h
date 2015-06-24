@@ -5,11 +5,15 @@
 ** Login   <vasseu_g@epitech.net>
 ** 
 ** Started on  Wed Jun 24 11:57:38 2015 Adrien Vasseur
-** Last update Wed Jun 24 12:18:03 2015 Adrien Vasseur
+** Last update Wed Jun 24 14:59:56 2015 Adrien Vasseur
 */
 
 #ifndef			WINDOW_H_
 # define		WINDOW_H_
+
+# include		<iostream>
+# include		<string>
+# include		<GL/glew.h>
 
 # include		<SFML/Window.hpp>
 # include		<SFML/OpenGL.hpp>
@@ -26,7 +30,12 @@ namespace		Display
     void		run();
 
   private:
+    void		initContext();
+
     sf::Window		*m_win;
+    sf::ContextSettings	m_context;
+    sf::VideoMode	m_video;
+    std::string		m_name;
   };
 };
 
