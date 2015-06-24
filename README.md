@@ -13,4 +13,5 @@ To build the project :
 Required :
 
 1. OpenGL
-2. SFML 2.x
+2. GLEW
+3. SFML 2.x
