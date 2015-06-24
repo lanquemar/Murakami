@@ -5,7 +5,7 @@
 ** Login   <vasseu_g@epitech.net>
 ** 
 ** Started on  Wed Jun 24 11:57:38 2015 Adrien Vasseur
-** Last update Wed Jun 24 14:59:56 2015 Adrien Vasseur
+** Last update Wed Jun 24 22:14:41 2015 Adrien Vasseur
 */
 
 #ifndef			WINDOW_H_
@@ -17,6 +17,8 @@
 
 # include		<SFML/Window.hpp>
 # include		<SFML/OpenGL.hpp>
+
+# include		"Display/Shader.h"
 
 namespace		Display
 {
@@ -36,6 +38,8 @@ namespace		Display
     sf::ContextSettings	m_context;
     sf::VideoMode	m_video;
     std::string		m_name;
+
+    Display::Shader	*m_shader;
   };
 };
 

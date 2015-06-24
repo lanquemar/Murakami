@@ -5,7 +5,7 @@
 ** Login   <vasseu_g@epitech.net>
 ** 
 ** Started on  Wed Jun 24 12:02:07 2015 Adrien Vasseur
-** Last update Wed Jun 24 15:00:24 2015 Adrien Vasseur
+** Last update Wed Jun 24 22:33:59 2015 Adrien Vasseur
 */
 
 #include	"Display/Window.h"
@@ -15,12 +15,15 @@ namespace	Display
   Window::Window()
   {
     this->m_win = NULL;
+    this->m_shader = NULL;
   }
 
   Window::~Window()
   {
     if (this->m_win)
       delete this->m_win;
+    if (this->m_shader)
+      delete this->m_shader;
   }
 
   void		Window::initContext()
@@ -41,19 +44,24 @@ namespace	Display
     GLenum	status;
 
     initContext();
-    this->m_win = new sf::Window(this->m_video, this->m_name, sf::Style::Default, this->m_context);
+    this->m_win = new sf::Window(this->m_video, this->m_name,
+				 sf::Style::Default, this->m_context);
     if (!this->m_win)
       return (false);
     this->m_win->setVerticalSyncEnabled(true);
 
     if ((status = glewInit()) != GLEW_OK)
       {
-	std::cerr << "[ERROR] GLEW init : " << glewGetErrorString(status) << std::endl;
+	std::cerr << "[ERROR] GLEW init : "
+		  << glewGetErrorString(status) << std::endl;
 	return (false);
       }
     glEnable(GL_BLEND);
     glEnable(GL_DEPTH_TEST);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    this->m_shader = new Display::Shader("data/vertex.glsl", "data/fragment.glsl");
+    if (!this->m_shader->init())
+      return (false);
     return (true);
   }
 
