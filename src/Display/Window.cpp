@@ -5,7 +5,7 @@
 ** Login   <vasseu_g@epitech.net>
 ** 
 ** Started on  Wed Jun 24 12:02:07 2015 Adrien Vasseur
-** Last update Thu Jun 25 15:55:42 2015 Adrien Vasseur
+** Last update Fri Jun 26 00:04:37 2015 Adrien Vasseur
 */
 
 #include	"Display/Window.h"
@@ -17,7 +17,7 @@ namespace	Display
     this->m_win = NULL;
     this->m_shader = NULL;
     this->m_camera = NULL;
-    this->m_cube = NULL;
+    this->m_mesh = NULL;
   }
 
   Window::~Window()
@@ -28,8 +28,8 @@ namespace	Display
       delete this->m_shader;
     if (this->m_camera)
       delete this->m_camera;
-    if (this->m_cube)
-      delete this->m_cube;
+    if (this->m_mesh)
+      delete this->m_mesh;
   }
 
   bool		Window::create()
@@ -52,13 +52,15 @@ namespace	Display
     glEnable(GL_BLEND);
     glEnable(GL_DEPTH_TEST);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    this->m_shader = new Display::Shader("data/vertex.glsl", "data/fragment.glsl");
+    this->m_shader = new Display::Shader("data/shaders/mesh.vert.glsl",
+					 "data/shaders/mesh.frag.glsl");
     if (!this->m_shader->init())
       return (false);
     this->m_camera = new Display::Camera;
-    this->m_cube = new Display::CubeRenderer;
-    if (!this->m_cube->init())
+    this->m_mesh = new Display::MeshRenderer;
+    if (!this->m_mesh->init())
       return (false);
+    this->m_mesh->setPosition(glm::vec3(2.0, 0.0, 2.0));
     return (true);
   }
 
@@ -82,7 +84,7 @@ namespace	Display
 	  }
 	this->movement(event);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	this->m_cube->draw(this->m_shader, this->m_camera);
+	this->m_mesh->draw(this->m_shader, this->m_camera);
 	this->m_win->display();
       }
   }

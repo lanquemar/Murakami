@@ -5,7 +5,7 @@
 ** Login   <vasseu_g@epitech.net>
 ** 
 ** Started on  Wed Jun 24 21:34:45 2015 Adrien Vasseur
-** Last update Thu Jun 25 15:49:52 2015 Adrien Vasseur
+** Last update Thu Jun 25 23:56:26 2015 Adrien Vasseur
 */
 
 #include		"Display/Shader.h"
@@ -143,26 +143,32 @@ namespace		Display
   bool			Shader::initAttribute()
   {
     std::string		name_vertex;
-    std::string		name_color;
+    std::string		name_texcoord;
     std::string		name_mvp;
+    std::string		name_data;
 
-    name_vertex = "coord3d";
-    name_color = "v_color";
-    name_mvp = "mvp";
+    name_vertex = "m_vertex";
+    name_texcoord = "m_texcoord";
+    name_mvp = "m_mvp";
+    name_data = "m_texture";
     this->m_attr_vertex = glGetAttribLocation(this->m_programId,
 					      name_vertex.c_str());
-    this->m_attr_colors = glGetAttribLocation(this->m_programId,
-					      name_color.c_str());
+    this->m_attr_texcoord = glGetAttribLocation(this->m_programId,
+						name_texcoord.c_str());
     this->m_uni_mvp = glGetUniformLocation(this->m_programId, name_mvp.c_str());
+    this->m_uni_texture = glGetUniformLocation(this->m_programId,
+					       name_data.c_str());
     if (this->m_attr_vertex == -1
-	|| this->m_attr_colors == -1
-	|| this->m_uni_mvp == -1)
+	|| this->m_attr_texcoord == -1
+	|| this->m_uni_mvp == -1
+	|| this->m_uni_texture == -1)
       {
 	std::cerr << "[ERROR] Shader::initAttribute : could not bind ";
 	std::cerr <<
 	  (this->m_attr_vertex == -1) ? name_vertex :
-	  (this->m_attr_colors == -1) ? name_color :
-	  name_mvp;
+	  (this->m_attr_texcoord == -1) ? name_texcoord :
+	  (this->m_uni_mvp == -1) ? name_mvp :
+	  name_data;
 	std::cerr << std::endl;
 	return (false);
       }

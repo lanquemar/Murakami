@@ -5,7 +5,7 @@
 ** Login   <vasseu_g@epitech.net>
 ** 
 ** Started on  Wed Jun 24 21:31:32 2015 Adrien Vasseur
-** Last update Wed Jun 24 22:26:53 2015 Adrien Vasseur
+** Last update Thu Jun 25 23:47:10 2015 Adrien Vasseur
 */
 
 #ifndef		SHADER_H_
@@ -29,8 +29,9 @@ namespace	Display
     GLuint	getProgramId() const;
 
     GLint	m_attr_vertex;
-    GLint	m_attr_colors;
+    GLint	m_attr_texcoord;
     GLint	m_uni_mvp;
+    GLint	m_uni_texture;
 
   private:
     static void	printLog(GLuint);

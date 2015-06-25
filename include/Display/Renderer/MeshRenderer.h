@@ -1,17 +1,19 @@
 /*
-** CubeRenderer.h for Murakami in /home/vasseu_g/github/Murakami
+** MeshRenderer.h for Murakami in /home/vasseu_g/github/Murakami
 ** 
 ** Made by Adrien Vasseur
 ** Login   <vasseu_g@epitech.net>
 ** 
-** Started on  Thu Jun 25 09:55:09 2015 Adrien Vasseur
-** Last update Thu Jun 25 11:14:58 2015 Adrien Vasseur
+** Started on  Thu Jun 25 22:34:51 2015 Adrien Vasseur
+** Last update Thu Jun 25 23:36:40 2015 Adrien Vasseur
 */
 
-#ifndef		CUBERENDERER_H_
-# define	CUBERENDERER_H_
+#ifndef		MESHRENDERER_H_
+# define	MESHRENDERER_H_
 
 # include	<GL/glew.h>
+
+# include	<SFML/Graphics/Texture.hpp>
 
 # define	GLM_FORCE_RADIANS
 # include	<glm/glm.hpp>
@@ -23,11 +25,11 @@
 
 namespace	Display
 {
-  class		CubeRenderer
+  class		MeshRenderer
   {
   public:
-    CubeRenderer();
-    ~CubeRenderer();
+    MeshRenderer();
+    ~MeshRenderer();
 
     bool	init();
     void	draw(Display::Shader *, Display::Camera *);
@@ -35,8 +37,10 @@ namespace	Display
     void	setSize(glm::vec3);
 
   private:
+    sf::Texture	*m_texture;
+
     GLuint	m_vbo_vertex;
-    GLuint	m_vbo_colors;
+    GLuint	m_vbo_texcoord;
     GLuint	m_ibo_index;
 
     glm::vec3	m_pos;
@@ -44,4 +48,4 @@ namespace	Display
   };
 };
 
-#endif		/* !CUBERENDERER_H_ */
+#endif		/* !MESHRENDERER_H_ */
