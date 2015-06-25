@@ -5,7 +5,7 @@
 ** Login   <vasseu_g@epitech.net>
 ** 
 ** Started on  Thu Jun 25 09:55:09 2015 Adrien Vasseur
-** Last update Thu Jun 25 10:40:14 2015 Adrien Vasseur
+** Last update Thu Jun 25 11:14:58 2015 Adrien Vasseur
 */
 
 #ifndef		CUBERENDERER_H_
@@ -19,6 +19,7 @@
 # include	<glm/gtc/type_ptr.hpp>
 
 # include	"Display/Shader.h"
+# include	"Display/Camera.h"
 
 namespace	Display
 {
@@ -29,7 +30,7 @@ namespace	Display
     ~CubeRenderer();
 
     bool	init();
-    void	draw(Display::Shader *);
+    void	draw(Display::Shader *, Display::Camera *);
     void	setPosition(glm::vec3);
     void	setSize(glm::vec3);
 

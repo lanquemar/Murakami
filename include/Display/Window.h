@@ -5,7 +5,7 @@
 ** Login   <vasseu_g@epitech.net>
 ** 
 ** Started on  Wed Jun 24 11:57:38 2015 Adrien Vasseur
-** Last update Wed Jun 24 22:14:41 2015 Adrien Vasseur
+** Last update Thu Jun 25 11:11:59 2015 Adrien Vasseur
 */
 
 #ifndef			WINDOW_H_
@@ -19,6 +19,8 @@
 # include		<SFML/OpenGL.hpp>
 
 # include		"Display/Shader.h"
+# include		"Display/Camera.h"
+# include		"Display/Renderer/CubeRenderer.h"
 
 namespace		Display
 {
@@ -40,6 +42,8 @@ namespace		Display
     std::string		m_name;
 
     Display::Shader	*m_shader;
+    Display::Camera	*m_camera;
+    Display::CubeRenderer	*m_cube;
   };
 };
 
