@@ -5,7 +5,7 @@
 ** Login   <vasseu_g@epitech.net>
 ** 
 ** Started on  Thu Jun 25 09:54:03 2015 Adrien Vasseur
-** Last update Thu Jun 25 11:21:41 2015 Adrien Vasseur
+** Last update Thu Jun 25 15:43:36 2015 Adrien Vasseur
 */
 
 #include	"Display/Renderer/CubeRenderer.h"
@@ -85,11 +85,8 @@ namespace	Display
     glm::mat4	mvp;
     int		size;
 
-    glm::mat4 tmp = glm::perspective(45.0f, 1.0f * 800.0f / 600.0f, 0.1f, 100000.0f)
-      * glm::lookAt(glm::vec3(5, 2, 0), glm::vec3(0, 0, 0), glm::vec3(0.0, 1.0, 0.0));
-
     model = glm::scale(glm::translate(glm::mat4(1.0f), this->m_pos), this->m_scale);
-    mvp = tmp * model;
+    mvp = camera->getMvp() * model;
 
     glUseProgram(shader->getProgramId());
     glUniformMatrix4fv(shader->m_uni_mvp, 1, GL_FALSE, glm::value_ptr(mvp));

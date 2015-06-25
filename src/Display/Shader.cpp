@@ -5,7 +5,7 @@
 ** Login   <vasseu_g@epitech.net>
 ** 
 ** Started on  Wed Jun 24 21:34:45 2015 Adrien Vasseur
-** Last update Wed Jun 24 22:32:52 2015 Adrien Vasseur
+** Last update Thu Jun 25 15:49:52 2015 Adrien Vasseur
 */
 
 #include		"Display/Shader.h"
@@ -27,11 +27,14 @@ namespace		Display
   {
     this->deleteAll();
 
-    if (!Shader::compile(this->m_vertexId, GL_VERTEX_SHADER, this->m_vertexSource))
+    if (!Shader::compile(this->m_vertexId, GL_VERTEX_SHADER,
+			 this->m_vertexSource))
       return (false);
-    if (!Shader::compile(this->m_fragmentId, GL_FRAGMENT_SHADER, this->m_fragmentSource))
+    if (!Shader::compile(this->m_fragmentId, GL_FRAGMENT_SHADER,
+			 this->m_fragmentSource))
       return (false);
-    if (!Shader::program(this->m_programId, this->m_vertexId, this->m_fragmentId))
+    if (!Shader::program(this->m_programId, this->m_vertexId,
+			 this->m_fragmentId))
       return (false);
     return (this->initAttribute());
   }
@@ -90,7 +93,7 @@ namespace		Display
     file.close();
 
     sourceCode = (GLchar *) (code.c_str());
-    glShaderSource(shader, 1, &sourceCode, NULL);
+    glShaderSource(shader, 1, (const GLchar **) &sourceCode, NULL);
     glCompileShader(shader);
     glGetShaderiv(shader, GL_COMPILE_STATUS, &compileState);
     if (compileState != GL_TRUE)

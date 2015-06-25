@@ -5,7 +5,7 @@
 ** Login   <vasseu_g@epitech.net>
 ** 
 ** Started on  Wed Jun 24 12:02:07 2015 Adrien Vasseur
-** Last update Thu Jun 25 11:16:23 2015 Adrien Vasseur
+** Last update Thu Jun 25 15:55:42 2015 Adrien Vasseur
 */
 
 #include	"Display/Window.h"
@@ -32,24 +32,11 @@ namespace	Display
       delete this->m_cube;
   }
 
-  void		Window::initContext()
-  {
-    m_context.depthBits = 24;
-    m_context.stencilBits = 8;
-    m_context.antialiasingLevel = 4;
-    m_context.majorVersion = 3;
-    m_context.minorVersion = 0;
-    m_video.width = 1024;
-    m_video.height = 768;
-    m_video.bitsPerPixel = 32;
-    m_name = "Murakami";
-  }
-
   bool		Window::create()
   {
     GLenum	status;
 
-    initContext();
+    this->initContext();
     this->m_win = new sf::Window(this->m_video, this->m_name,
 				 sf::Style::Default, this->m_context);
     if (!this->m_win)
@@ -88,11 +75,41 @@ namespace	Display
 	    if (event.type == sf::Event::Closed)
 	      running = false;
 	    else if (event.type == sf::Event::Resized)
-	      glViewport(0, 0, event.size.width, event.size.height);
+	      {
+		glViewport(0, 0, event.size.width, event.size.height);
+		this->m_camera->resize(event.size.width, event.size.height);
+	      }
 	  }
+	this->movement(event);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	this->m_cube->draw(this->m_shader, this->m_camera);
 	this->m_win->display();
       }
+  }
+
+  void		Window::initContext()
+  {
+    m_context.depthBits = 24;
+    m_context.stencilBits = 8;
+    m_context.antialiasingLevel = 4;
+    m_context.majorVersion = 3;
+    m_context.minorVersion = 0;
+    m_video.width = 1024;
+    m_video.height = 768;
+    m_video.bitsPerPixel = 32;
+    m_name = "Murakami";
+  }
+
+  void		Window::movement(sf::Event &event)
+  {
+    float	forward;
+    float	aside;
+
+    forward = 0.5f * sf::Keyboard::isKeyPressed(sf::Keyboard::Up) +
+      (- 0.5f) * sf::Keyboard::isKeyPressed(sf::Keyboard::Down);
+    aside = 0.5f * sf::Keyboard::isKeyPressed(sf::Keyboard::Right) +
+      (- 0.5f) * sf::Keyboard::isKeyPressed(sf::Keyboard::Left);
+    this->m_camera->moveForward(forward);
+    this->m_camera->moveAside(aside);
   }
 };
