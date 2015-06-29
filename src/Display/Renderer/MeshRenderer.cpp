@@ -5,7 +5,7 @@
 ** Login   <vasseu_g@epitech.net>
 ** 
 ** Started on  Thu Jun 25 22:44:57 2015 Adrien Vasseur
-** Last update Mon Jun 29 22:51:12 2015 Adrien Vasseur
+** Last update Mon Jun 29 23:51:26 2015 Adrien Vasseur
 */
 
 #include	"Display/Renderer/MeshRenderer.h"
@@ -94,6 +94,7 @@ namespace	Display
     glDisableVertexAttribArray(shader->m_attr_normal);
     glDisableVertexAttribArray(shader->m_attr_texcoord);
     glDisableVertexAttribArray(shader->m_attr_vertex);
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
     glUseProgram(0);
   }
 

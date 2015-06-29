@@ -5,7 +5,7 @@
 ** Login   <vasseu_g@epitech.net>
 ** 
 ** Started on  Wed Jun 24 12:02:07 2015 Adrien Vasseur
-** Last update Mon Jun 29 22:45:00 2015 Adrien Vasseur
+** Last update Mon Jun 29 23:54:03 2015 Adrien Vasseur
 */
 
 #include	"Display/Window.h"
@@ -17,6 +17,7 @@ namespace	Display
     this->m_win = NULL;
     this->m_shader = NULL;
     this->m_camera = NULL;
+    this->m_gui = NULL;
     this->m_map = NULL;
   }
 
@@ -28,6 +29,8 @@ namespace	Display
       delete this->m_shader;
     if (this->m_camera)
       delete this->m_camera;
+    if (this->m_gui)
+      delete this->m_gui;
     if (this->m_map)
       delete this->m_map;
   }
@@ -37,8 +40,8 @@ namespace	Display
     GLenum	status;
 
     this->initContext();
-    this->m_win = new sf::Window(this->m_video, this->m_name,
-				 sf::Style::Default, this->m_context);
+    this->m_win = new sf::RenderWindow(this->m_video, this->m_name,
+				       sf::Style::Default, this->m_context);
     if (!this->m_win)
       return (false);
     this->m_win->setVerticalSyncEnabled(true);
@@ -57,6 +60,9 @@ namespace	Display
     if (!this->m_shader->init())
       return (false);
     this->m_camera = new Display::Camera;
+    this->m_gui = new Display::Gui;
+    if (!this->m_gui->init())
+      return (false);
     this->m_map = new Display::MapRenderer;
     if (!this->m_map->init())
       return (false);
@@ -66,6 +72,7 @@ namespace	Display
   void		Window::run()
   {
     sf::Event	event;
+    sf::View	view;
     bool	running;
 
     running = true;
@@ -77,6 +84,9 @@ namespace	Display
 	      running = false;
 	    else if (event.type == sf::Event::Resized)
 	      {
+		view.reset(sf::FloatRect(0, 0, event.size.width,
+					 event.size.height));
+		this->m_win->setView(view);
 		glViewport(0, 0, event.size.width, event.size.height);
 		this->m_camera->resize(event.size.width, event.size.height);
 	      }
@@ -100,6 +110,9 @@ namespace	Display
 	this->movement(event);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	this->m_map->draw(this->m_shader, this->m_camera);
+	this->m_win->pushGLStates();
+	this->m_gui->draw(this->m_win);
+	this->m_win->popGLStates();
 	this->m_win->display();
       }
   }
