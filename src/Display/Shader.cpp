@@ -5,7 +5,7 @@
 ** Login   <vasseu_g@epitech.net>
 ** 
 ** Started on  Wed Jun 24 21:34:45 2015 Adrien Vasseur
-** Last update Thu Jun 25 23:56:26 2015 Adrien Vasseur
+** Last update Sun Jun 28 15:01:28 2015 Adrien Vasseur
 */
 
 #include		"Display/Shader.h"
@@ -144,31 +144,41 @@ namespace		Display
   {
     std::string		name_vertex;
     std::string		name_texcoord;
+    std::string		name_normal;
     std::string		name_mvp;
     std::string		name_data;
 
     name_vertex = "m_vertex";
     name_texcoord = "m_texcoord";
+    name_normal = "m_normal";
     name_mvp = "m_mvp";
     name_data = "m_texture";
     this->m_attr_vertex = glGetAttribLocation(this->m_programId,
 					      name_vertex.c_str());
     this->m_attr_texcoord = glGetAttribLocation(this->m_programId,
 						name_texcoord.c_str());
+    this->m_attr_normal = glGetAttribLocation(this->m_programId,
+					      name_normal.c_str());
     this->m_uni_mvp = glGetUniformLocation(this->m_programId, name_mvp.c_str());
     this->m_uni_texture = glGetUniformLocation(this->m_programId,
 					       name_data.c_str());
     if (this->m_attr_vertex == -1
 	|| this->m_attr_texcoord == -1
+	|| this->m_attr_normal == -1
 	|| this->m_uni_mvp == -1
 	|| this->m_uni_texture == -1)
       {
 	std::cerr << "[ERROR] Shader::initAttribute : could not bind ";
-	std::cerr <<
-	  (this->m_attr_vertex == -1) ? name_vertex :
-	  (this->m_attr_texcoord == -1) ? name_texcoord :
-	  (this->m_uni_mvp == -1) ? name_mvp :
-	  name_data;
+	if (this->m_attr_vertex == -1)
+	  std::cerr << name_vertex;
+	if (this->m_attr_texcoord == -1)
+	  std::cerr << name_texcoord;
+	if (this->m_attr_normal == -1)
+	  std::cerr << name_normal;
+	if (this->m_uni_mvp == -1)
+	  std::cerr << name_mvp;
+	if (this->m_uni_texture)
+	  std::cerr << name_data;
 	std::cerr << std::endl;
 	return (false);
       }

@@ -5,7 +5,7 @@
 ** Login   <vasseu_g@epitech.net>
 ** 
 ** Started on  Thu Jun 25 22:34:51 2015 Adrien Vasseur
-** Last update Thu Jun 25 23:36:40 2015 Adrien Vasseur
+** Last update Sun Jun 28 22:21:59 2015 Adrien Vasseur
 */
 
 #ifndef		MESHRENDERER_H_
@@ -22,6 +22,7 @@
 
 # include	"Display/Shader.h"
 # include	"Display/Camera.h"
+# include	"Display/Renderer/ObjImporter.h"
 
 namespace	Display
 {
@@ -31,17 +32,18 @@ namespace	Display
     MeshRenderer();
     ~MeshRenderer();
 
-    bool	init();
+    bool	init(std::string);
     void	draw(Display::Shader *, Display::Camera *);
     void	setPosition(glm::vec3);
     void	setSize(glm::vec3);
 
   private:
     sf::Texture	*m_texture;
+    Display::ObjImporter	*m_import;
 
     GLuint	m_vbo_vertex;
     GLuint	m_vbo_texcoord;
-    GLuint	m_ibo_index;
+    GLuint	m_vbo_normal;
 
     glm::vec3	m_pos;
     glm::vec3	m_scale;

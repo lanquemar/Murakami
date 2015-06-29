@@ -5,7 +5,7 @@
 ** Login   <vasseu_g@epitech.net>
 ** 
 ** Started on  Wed Jun 24 12:02:07 2015 Adrien Vasseur
-** Last update Fri Jun 26 00:04:37 2015 Adrien Vasseur
+** Last update Mon Jun 29 22:45:00 2015 Adrien Vasseur
 */
 
 #include	"Display/Window.h"
@@ -17,7 +17,7 @@ namespace	Display
     this->m_win = NULL;
     this->m_shader = NULL;
     this->m_camera = NULL;
-    this->m_mesh = NULL;
+    this->m_map = NULL;
   }
 
   Window::~Window()
@@ -28,8 +28,8 @@ namespace	Display
       delete this->m_shader;
     if (this->m_camera)
       delete this->m_camera;
-    if (this->m_mesh)
-      delete this->m_mesh;
+    if (this->m_map)
+      delete this->m_map;
   }
 
   bool		Window::create()
@@ -57,10 +57,9 @@ namespace	Display
     if (!this->m_shader->init())
       return (false);
     this->m_camera = new Display::Camera;
-    this->m_mesh = new Display::MeshRenderer;
-    if (!this->m_mesh->init())
+    this->m_map = new Display::MapRenderer;
+    if (!this->m_map->init())
       return (false);
-    this->m_mesh->setPosition(glm::vec3(2.0, 0.0, 2.0));
     return (true);
   }
 
@@ -81,10 +80,26 @@ namespace	Display
 		glViewport(0, 0, event.size.width, event.size.height);
 		this->m_camera->resize(event.size.width, event.size.height);
 	      }
+	    else if (event.type == sf::Event::MouseMoved)
+	      {
+		if (event.mouseMove.x != m_win->getSize().x / 2 ||
+		    event.mouseMove.y != m_win->getSize().y / 2)
+		  {
+		    this->m_camera->lookHori((event.mouseMove.x
+					      - this->m_win->getSize().x / 2.0f)
+					     * 0.005f);
+		    this->m_camera->lookVerti((event.mouseMove.y
+					       - this->m_win->getSize().y / 2.0f)
+					      * 0.005f);
+		    sf::Mouse::setPosition(sf::Vector2i(m_win->getSize().x / 2,
+							m_win->getSize().y / 2),
+					   *m_win);
+		  }
+	      }
 	  }
 	this->movement(event);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	this->m_mesh->draw(this->m_shader, this->m_camera);
+	this->m_map->draw(this->m_shader, this->m_camera);
 	this->m_win->display();
       }
   }

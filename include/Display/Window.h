@@ -5,7 +5,7 @@
 ** Login   <vasseu_g@epitech.net>
 ** 
 ** Started on  Wed Jun 24 11:57:38 2015 Adrien Vasseur
-** Last update Thu Jun 25 23:50:50 2015 Adrien Vasseur
+** Last update Sun Jun 28 22:25:26 2015 Adrien Vasseur
 */
 
 #ifndef				WINDOW_H_
@@ -20,7 +20,7 @@
 
 # include			"Display/Shader.h"
 # include			"Display/Camera.h"
-# include			"Display/Renderer/MeshRenderer.h"
+# include			"Display/Renderer/MapRenderer.h"
 
 namespace			Display
 {
@@ -44,7 +44,7 @@ namespace			Display
 
     Display::Shader		*m_shader;
     Display::Camera		*m_camera;
-    Display::MeshRenderer	*m_mesh;
+    Display::MapRenderer	*m_map;
   };
 };
 

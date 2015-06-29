@@ -5,7 +5,7 @@
 ** Login   <vasseu_g@epitech.net>
 ** 
 ** Started on  Thu Jun 25 22:44:57 2015 Adrien Vasseur
-** Last update Fri Jun 26 00:04:59 2015 Adrien Vasseur
+** Last update Mon Jun 29 22:51:12 2015 Adrien Vasseur
 */
 
 #include	"Display/Renderer/MeshRenderer.h"
@@ -18,101 +18,45 @@ namespace	Display
     this->m_scale = glm::vec3(1.0, 1.0, 1.0);
     this->m_vbo_vertex = 0;
     this->m_vbo_texcoord = 0;
-    this->m_ibo_index = 0;
+    this->m_vbo_normal = 0;
     this->m_texture = NULL;
+    this->m_import = NULL;
   }
 
   MeshRenderer::~MeshRenderer()
   {
     glDeleteBuffers(1, &(this->m_vbo_vertex));
     glDeleteBuffers(1, &(this->m_vbo_texcoord));
-    glDeleteBuffers(1, &(this->m_ibo_index));
+    glDeleteBuffers(1, &(this->m_vbo_normal));
+    if (this->m_texture)
+      delete this->m_texture;
+    if (this->m_import)
+      delete this->m_import;
   }
 
-  bool		MeshRenderer::init()
+  bool		MeshRenderer::init(std::string filename)
   {
-    GLfloat     vertex[] = {
-      -1.0, -1.0, 1.0,
-      1.0, -1.0, 1.0,
-      1.0, 1.0, 1.0,
-      -1.0, 1.0, 1.0,
-      -1.0, 1.0, 1.0,
-      1.0, 1.0, 1.0,
-      1.0, 1.0, -1.0,
-      -1.0, 1.0, -1.0,
-      1.0, -1.0, -1.0,
-      -1.0, -1.0, -1.0,
-      -1.0, 1.0, -1.0,
-      1.0, 1.0, -1.0,
-      -1.0, -1.0, -1.0,
-      1.0, -1.0, -1.0,
-      1.0, -1.0, 1.0,
-      -1.0, -1.0, 1.0,
-      -1.0, -1.0, -1.0,
-      -1.0, -1.0, 1.0,
-      -1.0, 1.0, 1.0,
-      -1.0, 1.0, -1.0,
-      1.0, -1.0, 1.0,
-      1.0, -1.0, -1.0,
-      1.0, 1.0, -1.0,
-      1.0, 1.0, 1.0,
-    };
-    GLfloat     texcoord[] = {
-      0.0, 0.0,
-      1.0, 0.0,
-      1.0, 1.0,
-      0.0, 1.0,
-      0.0, 0.0,
-      1.0, 0.0,
-      1.0, 1.0,
-      0.0, 1.0,
-      0.0, 0.0,
-      1.0, 0.0,
-      1.0, 1.0,
-      0.0, 1.0,
-      0.0, 0.0,
-      1.0, 0.0,
-      1.0, 1.0,
-      0.0, 1.0,
-      0.0, 0.0,
-      1.0, 0.0,
-      1.0, 1.0,
-      0.0, 1.0,
-      0.0, 0.0,
-      1.0, 0.0,
-      1.0, 1.0,
-      0.0, 1.0,
-    };
-    GLushort    index[] = {
-      0, 1, 2,
-      2, 3, 0,
-      4, 5, 6,
-      6, 7, 4,
-      8, 9, 10,
-      10, 11, 8,
-      12, 13, 14,
-      14, 15, 12,
-      16, 17, 18,
-      18, 19, 16,
-      20, 21, 22,
-      22, 23, 20,
-    };
+    this->m_import = new Display::ObjImporter;
+    if (!this->m_import->loadFromFile(filename))
+      return (false);
 
     this->m_texture = new sf::Texture;
-    if (!this->m_texture->loadFromFile("data/textures/cube.bmp"))
+    if (!this->m_texture->loadFromFile("data/textures/wall.bmp"))
       return (false);
+    this->m_texture->setRepeated(true);
 
     glGenBuffers(1, &(this->m_vbo_vertex));
     glBindBuffer(GL_ARRAY_BUFFER, this->m_vbo_vertex);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(vertex), vertex, GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, this->m_import->f_vertex.size() * sizeof(GLfloat), this->m_import->f_vertex.data(), GL_STATIC_DRAW);
 
     glGenBuffers(1, &(this->m_vbo_texcoord));
     glBindBuffer(GL_ARRAY_BUFFER, this->m_vbo_texcoord);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(texcoord), texcoord, GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, this->m_import->f_texcoord.size() * sizeof(GLfloat), this->m_import->f_texcoord.data(), GL_STATIC_DRAW);
 
-    glGenBuffers(1, &(this->m_ibo_index));
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, this->m_ibo_index);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(index), index, GL_STATIC_DRAW);
+    glGenBuffers(1, &(this->m_vbo_normal));
+    glBindBuffer(GL_ARRAY_BUFFER, this->m_vbo_normal);
+    glBufferData(GL_ARRAY_BUFFER, this->m_import->f_normal.size() * sizeof(GLfloat), this->m_import->f_normal.data(), GL_STATIC_DRAW);
+
     return (true);
   }
 
@@ -129,7 +73,7 @@ namespace	Display
     glUniformMatrix4fv(shader->m_uni_mvp, 1, GL_FALSE, glm::value_ptr(mvp));
 
     glActiveTexture(GL_TEXTURE0);
-    sf::Texture::bind(this->m_texture);
+    sf::Texture::bind(this->m_import->m_texture);
     glUniform1i(shader->m_uni_texture, 0);
 
     glEnableVertexAttribArray(shader->m_attr_vertex);
@@ -140,11 +84,14 @@ namespace	Display
     glBindBuffer(GL_ARRAY_BUFFER, this->m_vbo_texcoord);
     glVertexAttribPointer(shader->m_attr_texcoord, 2, GL_FLOAT, GL_FALSE, 0, 0);
 
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, this->m_ibo_index);
-    glGetBufferParameteriv(GL_ELEMENT_ARRAY_BUFFER, GL_BUFFER_SIZE, &size);
-    glDrawElements(GL_TRIANGLES, size / sizeof(GLushort), GL_UNSIGNED_SHORT, 0);
+    glEnableVertexAttribArray(shader->m_attr_normal);
+    glBindBuffer(GL_ARRAY_BUFFER, this->m_vbo_normal);
+    glVertexAttribPointer(shader->m_attr_normal, 3, GL_FLOAT, GL_FALSE, 0, 0);
+
+    glDrawArrays(GL_TRIANGLES, 0, this->m_import->f_vertex.size() / 3);
 
     sf::Texture::bind(NULL);
+    glDisableVertexAttribArray(shader->m_attr_normal);
     glDisableVertexAttribArray(shader->m_attr_texcoord);
     glDisableVertexAttribArray(shader->m_attr_vertex);
     glUseProgram(0);

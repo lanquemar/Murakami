@@ -5,7 +5,7 @@
 ** Login   <vasseu_g@epitech.net>
 ** 
 ** Started on  Thu Jun 25 10:55:43 2015 Adrien Vasseur
-** Last update Thu Jun 25 15:53:19 2015 Adrien Vasseur
+** Last update Mon Jun 29 21:23:59 2015 Adrien Vasseur
 */
 
 #include	"Display/Camera.h"
@@ -14,7 +14,7 @@ namespace	Display
 {
   Camera::Camera()
   {
-    this->m_pos = glm::vec3(0.0, 2.0, 0.0);
+    this->m_pos = glm::vec3(0.0, 1.75, 0.0);
     this->m_angleVision = glm::vec2(0.0, 0.0);
     this->update();
   }

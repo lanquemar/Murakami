@@ -5,7 +5,7 @@
 ** Login   <vasseu_g@epitech.net>
 ** 
 ** Started on  Wed Jun 24 21:31:32 2015 Adrien Vasseur
-** Last update Thu Jun 25 23:47:10 2015 Adrien Vasseur
+** Last update Sun Jun 28 15:02:06 2015 Adrien Vasseur
 */
 
 #ifndef		SHADER_H_
@@ -30,6 +30,7 @@ namespace	Display
 
     GLint	m_attr_vertex;
     GLint	m_attr_texcoord;
+    GLint	m_attr_normal;
     GLint	m_uni_mvp;
     GLint	m_uni_texture;
 
