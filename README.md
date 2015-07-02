@@ -16,3 +16,4 @@ Required :
 1. OpenGL
 2. GLEW
 3. SFML 2.x
+4. Bullet Physics 2.X
