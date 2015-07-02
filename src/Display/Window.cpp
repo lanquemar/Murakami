@@ -5,20 +5,20 @@
 ** Login   <vasseu_g@epitech.net>
 ** 
 ** Started on  Wed Jun 24 12:02:07 2015 Adrien Vasseur
-** Last update Mon Jun 29 23:54:03 2015 Adrien Vasseur
+** Last update Thu Jul  2 23:01:19 2015 Adrien Vasseur
 */
 
 #include	"Display/Window.h"
 
 namespace	Display
 {
-  Window::Window()
+  Window::Window(Engine::Core *engine) : e_engine(engine)
   {
     this->m_win = NULL;
     this->m_shader = NULL;
     this->m_camera = NULL;
     this->m_gui = NULL;
-    this->m_map = NULL;
+    this->m_mapRenderer = NULL;
   }
 
   Window::~Window()
@@ -31,8 +31,8 @@ namespace	Display
       delete this->m_camera;
     if (this->m_gui)
       delete this->m_gui;
-    if (this->m_map)
-      delete this->m_map;
+    if (this->m_mapRenderer)
+      delete this->m_mapRenderer;
   }
 
   bool		Window::create()
@@ -44,7 +44,7 @@ namespace	Display
 				       sf::Style::Default, this->m_context);
     if (!this->m_win)
       return (false);
-    this->m_win->setVerticalSyncEnabled(true);
+    /*    this->m_win->setVerticalSyncEnabled(true);*/
 
     if ((status = glewInit()) != GLEW_OK)
       {
@@ -59,12 +59,12 @@ namespace	Display
 					 "data/shaders/mesh.frag.glsl");
     if (!this->m_shader->init())
       return (false);
-    this->m_camera = new Display::Camera;
+    this->m_camera = new Display::Camera(this->e_engine->getPlayer());
     this->m_gui = new Display::Gui;
     if (!this->m_gui->init())
       return (false);
-    this->m_map = new Display::MapRenderer;
-    if (!this->m_map->init())
+    this->m_mapRenderer = new Display::MapRenderer(this->e_engine->getMap());
+    if (!this->m_mapRenderer->init())
       return (false);
     return (true);
   }
@@ -109,11 +109,12 @@ namespace	Display
 	  }
 	this->movement(event);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	this->m_map->draw(this->m_shader, this->m_camera);
+	this->m_mapRenderer->draw(this->m_shader, this->m_camera);
 	this->m_win->pushGLStates();
 	this->m_gui->draw(this->m_win);
 	this->m_win->popGLStates();
 	this->m_win->display();
+	this->e_engine->update();
       }
   }
 
@@ -135,11 +136,10 @@ namespace	Display
     float	forward;
     float	aside;
 
-    forward = 0.5f * sf::Keyboard::isKeyPressed(sf::Keyboard::Up) +
-      (- 0.5f) * sf::Keyboard::isKeyPressed(sf::Keyboard::Down);
-    aside = 0.5f * sf::Keyboard::isKeyPressed(sf::Keyboard::Right) +
-      (- 0.5f) * sf::Keyboard::isKeyPressed(sf::Keyboard::Left);
-    this->m_camera->moveForward(forward);
-    this->m_camera->moveAside(aside);
+    forward = sf::Keyboard::isKeyPressed(sf::Keyboard::Up) +
+      - sf::Keyboard::isKeyPressed(sf::Keyboard::Down);
+    aside = sf::Keyboard::isKeyPressed(sf::Keyboard::Right) +
+      - sf::Keyboard::isKeyPressed(sf::Keyboard::Left);
+    this->m_camera->move(forward, aside);
   }
 };

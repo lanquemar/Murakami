@@ -5,16 +5,15 @@
 ** Login   <vasseu_g@epitech.net>
 ** 
 ** Started on  Thu Jun 25 10:55:43 2015 Adrien Vasseur
-** Last update Mon Jun 29 21:23:59 2015 Adrien Vasseur
+** Last update Thu Jul  2 23:35:34 2015 Adrien Vasseur
 */
 
 #include	"Display/Camera.h"
 
 namespace	Display
 {
-  Camera::Camera()
+  Camera::Camera(Engine::Player *player) : e_player(player)
   {
-    this->m_pos = glm::vec3(0.0, 1.75, 0.0);
     this->m_angleVision = glm::vec2(0.0, 0.0);
     this->update();
   }
@@ -29,28 +28,26 @@ namespace	Display
 					  0.1f, 100000.0f);
   }
 
-  glm::mat4	Camera::getMvp()
+  void		Camera::move(float up, float right)
   {
-    return (this->m_projection * this->m_view);
-  }
+    float	x;
+    float	y;
 
-  void		Camera::moveForward(float value)
-  {
-    this->m_pos.z -= value * glm::sin(this->m_angleVision.x);
-    this->m_pos.x -= value * glm::cos(this->m_angleVision.x);
-    this->update();
-  }
-
-  void		Camera::moveAside(float value)
-  {
-    this->m_pos.z += value * glm::cos(this->m_angleVision.x + glm::pi<float>());
-    this->m_pos.x += value * glm::sin(this->m_angleVision.x);
+    x = - up * glm::cos(this->m_angleVision.x) + right *
+      glm::sin(this->m_angleVision.x);;
+    y = - up * glm::sin(this->m_angleVision.x) + right *
+      glm::cos(this->m_angleVision.x + glm::pi<float>());
+    this->e_player->move(x, y);
     this->update();
   }
 
   void		Camera::lookHori(float value)
   {
     this->m_angleVision.x += value;
+    while (this->m_angleVision.x > glm::pi<float>())
+      this->m_angleVision.x -= 2.0f * glm::pi<float>();
+    while (this->m_angleVision.x < - glm::pi<float>())
+      this->m_angleVision.x += 2.0f * glm::pi<float>();
     this->update();
   }
 
@@ -64,17 +61,21 @@ namespace	Display
     this->update();
   }
 
+  glm::mat4	Camera::getMvp()
+  {
+    return (this->m_projection * this->m_view);
+  }
+
   void		Camera::update()
   {
     glm::vec3	pos;
     glm::vec3	target;
 
-    pos.x = this->m_pos.x + glm::cos(this->m_angleVision.x);
-    pos.y = this->m_pos.y;
-    pos.z = this->m_pos.z + glm::sin(this->m_angleVision.x);
-    target.x = this->m_pos.x - glm::cos(this->m_angleVision.x);
-    target.y = this->m_pos.y + glm::tan(- this->m_angleVision.y);
-    target.z = this->m_pos.z + glm::sin(- this->m_angleVision.x);
+    pos = this->e_player->getPosition();
+    pos.y += 0.40f;
+    target.x = pos.x - glm::cos(this->m_angleVision.x);
+    target.y = pos.y + glm::tan(- this->m_angleVision.y);
+    target.z = pos.z + glm::sin(- this->m_angleVision.x);
     this->m_view = glm::lookAt(pos, target, glm::vec3(0.0, 1.0, 0.0));
   }
 };

@@ -5,7 +5,7 @@
 ** Login   <vasseu_g@epitech.net>
 ** 
 ** Started on  Wed Jun 24 11:57:38 2015 Adrien Vasseur
-** Last update Mon Jun 29 23:37:29 2015 Adrien Vasseur
+** Last update Thu Jul  2 22:55:37 2015 Adrien Vasseur
 */
 
 #ifndef				WINDOW_H_
@@ -18,6 +18,8 @@
 # include			<SFML/Graphics.hpp>
 # include			<SFML/OpenGL.hpp>
 
+# include			"Engine/Core.h"
+
 # include			"Display/Shader.h"
 # include			"Display/Camera.h"
 # include			"Display/Gui.h"
@@ -28,7 +30,7 @@ namespace			Display
   class				Window
   {
   public:
-    Window();
+    Window(Engine::Core *);
     ~Window();
 
     bool			create();
@@ -43,10 +45,12 @@ namespace			Display
     sf::VideoMode		m_video;
     std::string			m_name;
 
+    Engine::Core		*e_engine;
+
     Display::Shader		*m_shader;
     Display::Camera		*m_camera;
     Display::Gui		*m_gui;
-    Display::MapRenderer	*m_map;
+    Display::MapRenderer	*m_mapRenderer;
   };
 };
 

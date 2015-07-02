@@ -5,46 +5,48 @@
 ** Login   <vasseu_g@epitech.net>
 ** 
 ** Started on  Thu Jun 25 10:49:21 2015 Adrien Vasseur
-** Last update Thu Jun 25 10:53:53 2015 Adrien Vasseur
+** Last update Thu Jul  2 23:21:50 2015 Adrien Vasseur
 */
 
-#ifndef		CAMERA_H_
-# define	CAMERA_H_
+#ifndef			CAMERA_H_
+# define		CAMERA_H_
 
-# include	<iostream>
+# include		<iostream>
 
-# define	GLM_FORCE_RADIANS
-# include	<glm/glm.hpp>
-# include	<glm/gtc/matrix_transform.hpp>
-# include	<glm/gtc/type_ptr.hpp>
+# define		GLM_FORCE_RADIANS
+# include		<glm/glm.hpp>
+# include		<glm/gtc/matrix_transform.hpp>
+# include		<glm/gtc/type_ptr.hpp>
 
-namespace	Display
+# include		"Engine/Player.h"
+
+namespace		Display
 {
-  class		Camera
+  class			Camera
   {
   public:
-    Camera();
+    Camera(Engine::Player *);
     ~Camera();
 
-    void	resize(unsigned int, unsigned int);
-    glm::mat4	getMvp();
+    void		resize(unsigned int, unsigned int);
+    void		move(float, float);
 
-    void	moveForward(float);
-    void	moveAside(float);
+    void		lookHori(float);
+    void		lookVerti(float);
 
-    void	lookHori(float);
-    void	lookVerti(float);
+    glm::mat4		getMvp();
 
   private:
-    void	update();
+    void		update();
 
-    glm::mat4	m_view;
-    glm::mat4	m_projection;
+    Engine::Player	*e_player;
 
-    glm::vec3	m_pos;
-    glm::vec3	m_lookAt;
-    glm::vec2	m_angleVision;
+    glm::mat4		m_view;
+    glm::mat4		m_projection;
+
+    glm::vec3		m_lookAt;
+    glm::vec2		m_angleVision;
   };
 };
 
-#endif		/* !CAMERA_H_ */
+#endif			/* !CAMERA_H_ */

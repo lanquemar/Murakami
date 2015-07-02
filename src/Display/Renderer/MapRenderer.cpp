@@ -5,14 +5,14 @@
 ** Login   <vasseu_g@epitech.net>
 ** 
 ** Started on  Sun Jun 28 22:22:43 2015 Adrien Vasseur
-** Last update Mon Jun 29 22:46:33 2015 Adrien Vasseur
+** Last update Thu Jul  2 23:28:16 2015 Adrien Vasseur
 */
 
 #include	"Display/Renderer/MapRenderer.h"
 
 namespace	Display
 {
-  MapRenderer::MapRenderer()
+  MapRenderer::MapRenderer(Engine::Map *map) : e_map(map)
   {
     this->m_wall = NULL;
     this->m_ground = NULL;
@@ -28,11 +28,12 @@ namespace	Display
 
   bool		MapRenderer::init()
   {
-    this->m_ground = new MeshRenderer;
-    if (!this->m_ground->init("data/obj/ground.obj"))
+    this->m_ground = new MeshRenderer(this->e_map->getGroundMesh());
+    if (!this->m_ground->init())
       return (false);
-    this->m_wall = new MeshRenderer;
-    if (!this->m_wall->init("data/obj/wall.obj"))
+
+    this->m_wall = new MeshRenderer(this->e_map->getWallMesh());
+    if (!this->m_wall->init())
       return (false);
     return (true);
   }

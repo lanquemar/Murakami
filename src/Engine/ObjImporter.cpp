@@ -5,12 +5,12 @@
 ** Login   <vasseu_g@epitech.net>
 ** 
 ** Started on  Sat Jun 27 10:28:38 2015 Adrien Vasseur
-** Last update Mon Jun 29 22:56:33 2015 Adrien Vasseur
+** Last update Thu Jul  2 10:51:05 2015 Adrien Vasseur
 */
 
-#include	"Display/Renderer/ObjImporter.h"
+#include	"Engine/ObjImporter.h"
 
-namespace	Display
+namespace	Engine
 {
   ObjImporter::ObjImporter()
   {
@@ -23,11 +23,11 @@ namespace	Display
     this->f_normal.clear();
     this->m_index.clear();
     this->m_func.clear();
-    this->m_func.insert(std::make_pair("o", &Display::ObjImporter::newTexture));
-    this->m_func.insert(std::make_pair("vt", &Display::ObjImporter::newTextureCoord));
-    this->m_func.insert(std::make_pair("v", &Display::ObjImporter::newVertex));
-    this->m_func.insert(std::make_pair("vn", &Display::ObjImporter::newNormal));
-    this->m_func.insert(std::make_pair("f", &Display::ObjImporter::newFace));
+    this->m_func.insert(std::make_pair("o", &Engine::ObjImporter::newTexture));
+    this->m_func.insert(std::make_pair("vt", &Engine::ObjImporter::newTextureCoord));
+    this->m_func.insert(std::make_pair("v", &Engine::ObjImporter::newVertex));
+    this->m_func.insert(std::make_pair("vn", &Engine::ObjImporter::newNormal));
+    this->m_func.insert(std::make_pair("f", &Engine::ObjImporter::newFace));
   }
 
   ObjImporter::~ObjImporter()
